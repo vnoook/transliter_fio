@@ -112,13 +112,11 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             self.lineEdit_translit_full.setText(fio_eng)
 
             # разделяю по словам в список
-            if len(fio_rus_list) >= 3:
-                fam_val = fio_rus_list[0]
-                imya_val = fio_rus_list[1]
-                otch_val = fio_rus_list[2]
+            if len(fio_rus_list) == 1:
+                fam_val = fio_rus_list[0].strip()
 
                 # тут делается пользователь английскими буквами
-                fio_user = latinizator(fam_val + '.' + imya_val[0] + '.' + otch_val[0], alfa_dic)
+                fio_user = latinizator(fam_val, alfa_dic)
                 self.lineEdit_translit_user.setText(fio_user)
 
             elif len(fio_rus_list) == 2:
@@ -129,12 +127,16 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                 fio_user = latinizator(fam_val + '.' + imya_val[0], alfa_dic)
                 self.lineEdit_translit_user.setText(fio_user)
 
-            elif len(fio_rus_list) == 1:
-                fam_val = fio_rus_list[0].strip()
+            else:
+                fam_val = fio_rus_list[0]
+                imya_val = fio_rus_list[1]
+                otch_val = fio_rus_list[2]
 
                 # тут делается пользователь английскими буквами
-                fio_user = latinizator(fam_val, alfa_dic)
+                fio_user = latinizator(fam_val + '.' + imya_val[0] + '.' + otch_val[0], alfa_dic)
                 self.lineEdit_translit_user.setText(fio_user)
+
+
 
     # событие - нажатие на кнопку Выход
     @staticmethod
