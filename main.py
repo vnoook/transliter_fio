@@ -21,7 +21,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
     def __init__(self):
         super(Window, self).__init__()
 
-        # главное окно, надпись на нём и размеры
+        # ГЛАВНОЕ ОКНО, надпись на нём и размеры
         self.setWindowTitle('Транслитерация ФИО в логин')
         self.setGeometry(600, 200, 420, 290)
         self.setFixedSize(420, 290)
@@ -84,7 +84,6 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.lineEdit_translit_user.setReadOnly(False)
         self.lineEdit_translit_user.setToolTip(self.lineEdit_translit_user.objectName())
 
-        # EXIT
         # button_exit
         self.button_exit = PyQt5.QtWidgets.QPushButton(self)
         self.button_exit.setObjectName('button_exit')
@@ -94,20 +93,58 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.button_exit.clicked.connect(self.click_on_btn_exit)
         self.button_exit.setToolTip(self.button_exit.objectName())
 
+    # функция транслитерации введённого теста
     def translit_fio(self):
-        fio = self.lineEdit_fio_rus.text()
-        fio_list = fio.strip().split()
-        fam_val = fio_list[0].strip()
-        imya_val = fio_list[1].strip()
-        otch_val = fio_list[2].strip()
+        # очистка полей
+        self.lineEdit_translit_full.setText(None)
+        self.lineEdit_translit_user.setText(None)
 
-        # тут делается пользователь английскими буквами
-        fio_eng = latinizator(fam_val + ' ' + imya_val + ' ' + otch_val, alfa_dic)
-        self.lineEdit_translit_full.setText(fio_eng)
+        # получаю текст из поля ввода
+        fio_rus = self.lineEdit_fio_rus.text()
+        # создание списка из текста
+        fio_rus_list = fio_rus.strip().split()
 
-        # тут делается пользователь английскими буквами
-        fio_user = latinizator(fam_val + '.' + imya_val[0] + '.' + otch_val[0], alfa_dic)
-        self.lineEdit_translit_user.setText(fio_user)
+        # если поле непустое, то разбираю на слова, пробел - разделитель
+        if fio_rus_list:
+            # разделяю по словам в список
+            if len(fio_rus_list) >= 3:
+                fam_val = fio_rus_list[0].strip()
+                imya_val = fio_rus_list[1].strip()
+                otch_val = fio_rus_list[2].strip()
+
+                # тут транситерируется английскими буквами
+                fio_eng = latinizator(fam_val + ' ' + imya_val + ' ' + otch_val, alfa_dic)
+                self.lineEdit_translit_full.setText(fio_eng)
+
+                # тут делается пользователь английскими буквами
+                fio_user = latinizator(fam_val + '.' + imya_val[0] + '.' + otch_val[0], alfa_dic)
+                self.lineEdit_translit_user.setText(fio_user)
+
+            elif len(fio_rus_list) == 2:
+                fam_val = fio_rus_list[0].strip()
+                imya_val = fio_rus_list[1].strip()
+                otch_val = ''
+
+                # тут транситерируется английскими буквами
+                fio_eng = latinizator(fam_val + ' ' + imya_val, alfa_dic)
+                self.lineEdit_translit_full.setText(fio_eng)
+
+                # тут делается пользователь английскими буквами
+                fio_user = latinizator(fam_val + '.' + imya_val[0], alfa_dic)
+                self.lineEdit_translit_user.setText(fio_user)
+
+            elif len(fio_rus_list) == 1:
+                fam_val = fio_rus_list[0].strip()
+                imya_val = ''
+                otch_val = ''
+
+                # тут транситерируется английскими буквами
+                fio_eng = latinizator(fam_val, alfa_dic)
+                self.lineEdit_translit_full.setText(fio_eng)
+
+                # тут делается пользователь английскими буквами
+                fio_user = latinizator(fam_val, alfa_dic)
+                self.lineEdit_translit_user.setText(fio_user)
 
     # событие - нажатие на кнопку Выход
     @staticmethod
