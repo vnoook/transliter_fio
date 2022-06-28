@@ -23,8 +23,8 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
         # ГЛАВНОЕ ОКНО, надпись на нём и размеры
         self.setWindowTitle('Транслитерация ФИО в логин')
-        self.setGeometry(600, 200, 420, 290)
-        self.setFixedSize(420, 290)
+        self.setGeometry(600, 200, 470, 290)
+        self.setFixedSize(470, 290)
         self.setWindowFlag(PyQt5.QtCore.Qt.WindowStaysOnTopHint)
 
         # ОБЪЕКТЫ НА ФОРМЕ
@@ -43,7 +43,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.lineEdit_fio_rus = PyQt5.QtWidgets.QLineEdit(self)
         self.lineEdit_fio_rus.setObjectName('lineEdit_fio_rus')
         self.lineEdit_fio_rus.setText('Фамилия Имя Отчество')
-        self.lineEdit_fio_rus.setGeometry(PyQt5.QtCore.QRect(10, 40, 400, 40))
+        self.lineEdit_fio_rus.setGeometry(PyQt5.QtCore.QRect(10, 40, 450, 40))
         font = PyQt5.QtGui.QFont()
         font.setPointSize(16)
         self.lineEdit_fio_rus.setFont(font)
@@ -56,7 +56,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.pushButton_translit.setObjectName('pushButton_translit')
         self.pushButton_translit.setEnabled(True)
         self.pushButton_translit.setText('затранслитеризировать строку')
-        self.pushButton_translit.setGeometry(PyQt5.QtCore.QRect(10, 90, 400, 25))
+        self.pushButton_translit.setGeometry(PyQt5.QtCore.QRect(10, 90, 450, 25))
         self.pushButton_translit.clicked.connect(self.translit_fio)
         self.pushButton_translit.setToolTip(self.pushButton_translit.objectName())
 
@@ -64,7 +64,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.lineEdit_translit_full = PyQt5.QtWidgets.QLineEdit(self)
         self.lineEdit_translit_full.setObjectName('lineEdit_translit_full')
         self.lineEdit_translit_full.setText('')
-        self.lineEdit_translit_full.setGeometry(PyQt5.QtCore.QRect(10, 130, 400, 40))
+        self.lineEdit_translit_full.setGeometry(PyQt5.QtCore.QRect(10, 130, 450, 40))
         font = PyQt5.QtGui.QFont()
         font.setPointSize(12)
         self.lineEdit_translit_full.setFont(font)
@@ -76,7 +76,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.lineEdit_translit_user = PyQt5.QtWidgets.QLineEdit(self)
         self.lineEdit_translit_user.setObjectName('lineEdit_translit_user')
         self.lineEdit_translit_user.setText('')
-        self.lineEdit_translit_user.setGeometry(PyQt5.QtCore.QRect(10, 180, 400, 40))
+        self.lineEdit_translit_user.setGeometry(PyQt5.QtCore.QRect(10, 180, 450, 40))
         font = PyQt5.QtGui.QFont()
         font.setPointSize(12)
         self.lineEdit_translit_user.setFont(font)
@@ -107,21 +107,21 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             # создание списка из текста
             fio_rus_list = fio_rus.strip().split()[:3]
 
-            # тут транситерируется английскими буквами
-            fio_eng = ' '.join(fio_rus_list)
+            # тут транслитерируется английскими буквами
+            fio_eng = latinizator(' '.join(fio_rus_list), alfa_dic)
             self.lineEdit_translit_full.setText(fio_eng)
 
             # разделяю по словам в список
             if len(fio_rus_list) == 1:
-                fam_val = fio_rus_list[0].strip()
+                fam_val = fio_rus_list[0]
 
                 # тут делается пользователь английскими буквами
                 fio_user = latinizator(fam_val, alfa_dic)
                 self.lineEdit_translit_user.setText(fio_user)
 
             elif len(fio_rus_list) == 2:
-                fam_val = fio_rus_list[0].strip()
-                imya_val = fio_rus_list[1].strip()
+                fam_val = fio_rus_list[0]
+                imya_val = fio_rus_list[1]
 
                 # тут делается пользователь английскими буквами
                 fio_user = latinizator(fam_val + '.' + imya_val[0], alfa_dic)
@@ -135,8 +135,6 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                 # тут делается пользователь английскими буквами
                 fio_user = latinizator(fam_val + '.' + imya_val[0] + '.' + otch_val[0], alfa_dic)
                 self.lineEdit_translit_user.setText(fio_user)
-
-
 
     # событие - нажатие на кнопку Выход
     @staticmethod
