@@ -101,20 +101,21 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
         # получаю текст из поля ввода
         fio_rus = self.lineEdit_fio_rus.text()
-        # создание списка из текста
-        fio_rus_list = fio_rus.strip().split()
 
         # если поле непустое, то разбираю на слова, пробел - разделитель
-        if fio_rus_list:
+        if fio_rus:
+            # создание списка из текста
+            fio_rus_list = fio_rus.strip().split()[:3]
+
+            # тут транситерируется английскими буквами
+            fio_eng = ' '.join(fio_rus_list)
+            self.lineEdit_translit_full.setText(fio_eng)
+
             # разделяю по словам в список
             if len(fio_rus_list) >= 3:
-                fam_val = fio_rus_list[0].strip()
-                imya_val = fio_rus_list[1].strip()
-                otch_val = fio_rus_list[2].strip()
-
-                # тут транситерируется английскими буквами
-                fio_eng = latinizator(fam_val + ' ' + imya_val + ' ' + otch_val, alfa_dic)
-                self.lineEdit_translit_full.setText(fio_eng)
+                fam_val = fio_rus_list[0]
+                imya_val = fio_rus_list[1]
+                otch_val = fio_rus_list[2]
 
                 # тут делается пользователь английскими буквами
                 fio_user = latinizator(fam_val + '.' + imya_val[0] + '.' + otch_val[0], alfa_dic)
@@ -123,11 +124,6 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             elif len(fio_rus_list) == 2:
                 fam_val = fio_rus_list[0].strip()
                 imya_val = fio_rus_list[1].strip()
-                otch_val = ''
-
-                # тут транситерируется английскими буквами
-                fio_eng = latinizator(fam_val + ' ' + imya_val, alfa_dic)
-                self.lineEdit_translit_full.setText(fio_eng)
 
                 # тут делается пользователь английскими буквами
                 fio_user = latinizator(fam_val + '.' + imya_val[0], alfa_dic)
@@ -135,12 +131,6 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
             elif len(fio_rus_list) == 1:
                 fam_val = fio_rus_list[0].strip()
-                imya_val = ''
-                otch_val = ''
-
-                # тут транситерируется английскими буквами
-                fio_eng = latinizator(fam_val, alfa_dic)
-                self.lineEdit_translit_full.setText(fio_eng)
 
                 # тут делается пользователь английскими буквами
                 fio_user = latinizator(fam_val, alfa_dic)
